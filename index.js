@@ -17,25 +17,48 @@ app.post('/api/v1/user',async(req, res)=>{
 		name:data.name,
 	});
      if(!find_user){
-		await user.create({
+		await user.create({ 
 			name:data.name,
 		})
 		return res.json({
 			msg: "user created!",
 			status:404,
+			newUser:true,
 		})
 	 }
+	 
 	 if(data.profile===undefined){
 		return res.json({
 			msg: "profile undefined",
 			status:404,
+			newUser:false,
 		})
 	 }
+	 else{
+		try{
+		const query={};
+		query[data.profile]={$exists:true};
+		const found=await user.find(query);
+		if(found.length===0){
+			return res.json({
+				msg: "Profile Not found",
+				status:404,
+			})
+		}
+		return res.json({
+			link:find_user[data.profile],
+			status:200,
+		})
+	}
+	catch(e){
+		return res.json({
+			msg: "Error while profile fetching",
+			status: 403
+		})
+	}
+	 }
 	
-	return res.json({
-		link:find_user[data.profile],
-		status:200,
-	})
+	
 	
 })
 
