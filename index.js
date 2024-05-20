@@ -94,6 +94,30 @@ res.status(200).json({
    
 })
 
+app.post('/api/v1/user/password', async(req,res)=>{
+	const data=req.body();
+	try{
+    const account=await user.updateOne({
+		name:data.username,
+	}, [
+		{
+			$set :{
+				password : data.password,
+			}
+		}
+	])
+	return res.json({
+		status:200,
+		msg: "Password added successfully",
+	})
+}
+catch(e){
+   return res.json({
+	msg: "error while adding password"
+   })
+}
+})
+
 app.get('/', (req,res)=>{
 	return res.json({
 		msg: "Gaurav Sharma"
