@@ -95,7 +95,7 @@ res.status(200).json({
 })
 
 app.post('/api/v1/user/password', async(req,res)=>{
-	const data=req.body();
+	const data=req.body;
 	try{
     const account=await user.updateOne({
 		name:data.username,
@@ -116,6 +116,22 @@ catch(e){
 	msg: "error while adding password"
    })
 }
+})
+
+app.post('/api/v1/user/verify', async (req,res)=>{
+	const data=req.body;
+	const account=await user.findOne({
+		name:data.username,
+		password:data.password,
+	})
+	if(!account){
+		return res.json({
+			status:404,
+		})
+	}
+	return res.json({
+		status:200,
+	})
 })
 
 app.get('/', (req,res)=>{
