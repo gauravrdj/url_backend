@@ -27,9 +27,9 @@ app.post('/api/v1/user',async(req, res)=>{
 		})
 	 }
 	 
-	 if(data.profile===undefined){
+	 if(data.profile===undefined || find_user.password===undefined){
 		let newOrNot=false;
-		if(data.password===undefined){
+		if(find_user.password===undefined){
 			newOrNot=true;
 		}
 		return res.json({
