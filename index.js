@@ -28,10 +28,14 @@ app.post('/api/v1/user',async(req, res)=>{
 	 }
 	 
 	 if(data.profile===undefined){
+		let newOrNot=false;
+		if(data.password===undefined){
+			newOrNot=true;
+		}
 		return res.json({
 			msg: "profile undefined",
 			status:404,
-			newUser:false,
+			newUser:newOrNot,
 		})
 	 }
 	 else{
